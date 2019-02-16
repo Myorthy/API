@@ -13,6 +13,10 @@ auth_data = {
 TOKEN = 'acce4e3112156fc596406cec7c3c201ce0d4da214bc5ea6a82eb0e2ab9cdc1a3e4059ef1d97441dc71b88'
 
 # print('?'.join((AUTH_URL, urlencode(auth_data))))
+class User_id:
+    def __init__(self, id):
+        self.id = id
+
 
 class User:
 
@@ -39,13 +43,19 @@ class User:
     def mutual_friends(self, user_id):
         params = self.get_params()
         params['target_uid'] = user_id
-        response = requests.get('https://api.vk.com/method/friends.getMutual', params)
-        return response.json()
+        response_1 = requests.get('https://api.vk.com/method/friends.getMutual', params)
+        friends = response_1.json()['response']
+        friend_list = []
+        for friend in friends:
+            friend_list.append(User_id(friend))
+        return friend_list
 
 
-
-
-
-user = User(TOKEN)
-print(user.get_status())
+# user = User(TOKEN)
+# print(user.get_status())
 print(user.mutual_friends(90826116))
+# print(user)
+
+# user = User_id(90826116)
+# user = f'https://vk.com/id{user.id}'
+# print(user)
